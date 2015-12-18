@@ -1,7 +1,8 @@
 <template name='eventTemplate'>
+  <!-- for prototyping -->
   <table width="100%">
     <tr>
-      <td width="10%">name</td>
+      <td width="10%" id="name" class="{{selected}}">name</td>
       <td width="90%">{{name}}</td>
     </tr>
     <tr>
@@ -14,13 +15,13 @@
     </tr>
     <tr>
       <td>poster</td>
-      <td>{{posterID}}: {{poster}}</td>
+      <td>{{posterID}}: <a id="theposter" href="">{{poster}}</a></td>
     </tr>
     <tr>
       <td>tags</td>
       <td>
         {{#each tags}}
-          {{this}}
+          <a class="tag" href="">{{this}}</a>
         {{/each}}
       </td>
     </tr>
@@ -29,7 +30,7 @@
       <td>{{address}}</td>
     </tr>
     <tr>
-      <td>attending</td>
+      <td><a id="attending" href="">attending</a></td>
       <td>{{num}}</td>
     </tr>
   </table>
@@ -79,9 +80,6 @@
 <template name="submit">
     <h2>Create a New Event</h2>
     <form id='createEvent'>
-        Poster:<br>
-        <input type="text" id="crPoster" class='crField' placeholder="Title">
-        <br>
         Title:<br>
         <input type="text" id="crTitle" class='crField' placeholder="Title">
         <br>

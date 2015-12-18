@@ -10,63 +10,6 @@ if(Meteor.isClient){
             //var day=date.getDay();
             var month=date.getMonth();
             var out = String(month+1)+'/'
-            /*            switch(day){
-                case 0:
-                    day = 'Sunday';
-                    break;
-                case 1:
-                    day = 'Monday';
-                    break;
-                case 2:
-                    day = 'Tuesday';
-                    break;
-                case 3:
-                    day = 'Wednesday';
-                    break;
-                case 4:
-                    day = 'Thursday';
-                    break;
-                case 5:
-                    day = 'Friday';
-                    break;
-                case 6:
-                    day = 'Saturday';
-                    break;
-                default:
-                    day='Sunday';
-                    break;
-            }
-            switch(month){
-                case 0:
-                    month="January";
-                case 1:
-                    month='Febrauary';
-                case 2:
-                    month='March';
-                case 3:
-                    month='April';
-                case 4:
-                    month='May';
-                case 5:
-                    month='June';
-                case 6:
-                    month='July';
-                case 7: 
-                    month='August';
-                case 8:
-                    month= 'September';
-                case 9:
-                    month= 'October';
-                case 10:
-                    month="November";
-                case 11:
-                    month="December";
-                default:
-                    month='January';
-            }
-            day = ', '+day;
-            out+=day+', ';
-            out+=month+' ';*/
             out+=date.getDate().toString();//+' ';
             console.log(out);
             return out;
@@ -78,14 +21,17 @@ if(Meteor.isClient){
         },
         address: function(){
             return this.address;
+        },
+        selected: function() {
+            if (this._id == Session.get("selected")) {
+                return "selected";
+            }
         }
     });
     Template.submit.events({
-
         'submit #createEvent': function (event) {
-            var poster = $('#crPoster').val();
             event.preventDefault();
-            //            Meteor.subscribe('orgsList');
+            var poster = Meteor.user().username;
             if(OrgDB.findOne({poster:poster})){
                 Session.set('crOrgID', OrgDB.findOne({poster:poster})._id)
             }
@@ -104,7 +50,7 @@ if(Meteor.isClient){
             var dateTime = new Date($('#crDate').val() + "T" + $('#crTime').val() + ":00");
             var data = {
                 poster : poster,
-                posterID: Session.get('crOrgID'),
+                posterID: Meteor.userId(),
                 name : $('#crTitle').val(),
                 address : $('#crTitle').val(),
                 datetime : dateTime,
@@ -117,6 +63,10 @@ if(Meteor.isClient){
         }
     });
     Template.eventTemplate.events({
+        'click #name': function(e) {
+            Session.set("selected",this._id);
+            console.log(this._id);
+        },
         'click #attending': function(e){
             e.preventDefault();
             console.log(this._id._str);
@@ -138,8 +88,21 @@ if(Meteor.isClient){
             Router.go('orgPage', {page: page});
         }
     });
-};
+    Template.eventListing.events({
+        'click #remove': function() {
+            EventDB.remove({_id: Session.get("selected")});
+            console.log(Session.get("selected"));
+        },
+        'click': function() {
+            console.log(Meteor.userId());
+            console.log(Meteor.user().username);
+        }
+    });
 
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
+};
 
 /*if(Meteor.isServer){
     if(!EventDB.findOne()){
