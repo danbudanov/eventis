@@ -20,3 +20,4 @@ mdg:geolocation
 twbs:bootstrap
 rajit:bootstrap3-datepicker
 iron:router
+autopublish

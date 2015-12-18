@@ -1,5 +1,6 @@
 EventDB = new Mongo.Collection('eventslist');
 OrgDB = new Mongo.Collection('orgslist');
+
 if(Meteor.isServer){
     //these are the index fields that the search runs off of
     EventDB._ensureIndex({
@@ -8,7 +9,7 @@ if(Meteor.isServer){
     });
 
     //generate list of events from db and send to client
-    Meteor.publish('eventsList', function(fparam,geo, date, org){
+    Meteor.publish('eventsList', function(fparam, geo, date, org){
         if (org){
             return EventDB.find({poster:org});
         }
@@ -20,8 +21,6 @@ if(Meteor.isServer){
         }
         //if input is a string, search for it and return all search results
         else if (typeof(fparam)==='string'){
-            console.log('searched');
-            console.log('fparam');
             return EventDB.find({ $text: {$search: fparam},datetime : {$gte: date}},
                 {
                 //determines which documents are best match for search

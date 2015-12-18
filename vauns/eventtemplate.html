@@ -1,4 +1,43 @@
 <template name='eventTemplate'>
+  <table width="100%">
+    <tr>
+      <td width="10%">name</td>
+      <td width="90%">{{name}}</td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>{{dateF}}</td>
+    </tr>
+    <tr>
+      <td>time</td>
+      <td>{{time}}</td>
+    </tr>
+    <tr>
+      <td>poster</td>
+      <td>{{posterID}}: {{poster}}</td>
+    </tr>
+    <tr>
+      <td>tags</td>
+      <td>
+        {{#each tags}}
+          {{this}}
+        {{/each}}
+      </td>
+    </tr>
+    <tr>
+      <td>location</td>
+      <td>{{address}}</td>
+    </tr>
+    <tr>
+      <td>attending</td>
+      <td>{{num}}</td>
+    </tr>
+  </table>
+</template>
+
+
+<!--looks so shitty-->
+<template name='eventTemplate_prototype'>
     <div id="eventWrapper">
         <div id="event">
             <div id = "dateWrapper">
@@ -21,7 +60,7 @@
                     {{this}}
                 </div>
             </a>
-            {{/each}}   
+            {{/each}}
 
             <div id = "eventLocation">
                 {{address}}
@@ -35,6 +74,8 @@
         </div>
     </div>
 </template>
+
+
 <template name="submit">
     <h2>Create a New Event</h2>
     <form id='createEvent'>
@@ -64,6 +105,3 @@
         <input type="submit" value="Submit">
     </form>
 </template>
-
-
-
