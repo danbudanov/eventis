@@ -9,33 +9,31 @@ if(Meteor.isServer){
     });
 
     //generate list of events from db and send to client
-    Meteor.publish('eventsList', function(fparam, geo, date, org){
-        if (org){
-            return EventDB.find({poster:org});
-        }
-        //if argument string empty, return all documents in DB
-        else if (!fparam){
-            console.log('retrieving all entries')
-            console.log(fparam);
-            return EventDB.find({datetime : {$gte: date}});
-        }
-        //if input is a string, search for it and return all search results
-        else if (typeof(fparam)==='string'){
-            return EventDB.find({ $text: {$search: fparam},datetime : {$gte: date}},
-                {
-                //determines which documents are best match for search
-                fields: {
-                    score: { $meta: "textScore" }
-                },
-                sort: {
-                    score: { $meta: "textScore" }
-                }});
-        }
-        //if object(i.e. an array), convert to string and find matching tags
-        else if (typeof(fparam)==='object'){
-            return EventDB.find({tags: String(fparam),datetime : {$gte: date}});
-        }
-    });
+    //getEvents is an object with search, tag, org, date, and geo attriubtes
+    Meteor.publish('eventsList', function(getEvents){
+    if (getEvents.org){
+        return EventDB.find({poster:getEvents.org});
+    }
+    //if object contains search attribute, search by this string
+    else if (getEvents.search){
+        return EventDB.find({ $text: {$search: getEvents.search},datetime : {$gte: getEvents.date}},
+                            {
+            //determines which documents are best match for search
+            fields: {
+                score: { $meta: "textScore" }
+            },
+            sort: {
+                score: { $meta: "textScore" }
+            }});
+    }
+    //if object(i.e. an array), convert to string and find matching tags
+    else if (getEvents.tag){
+        return EventDB.find({tags: String(getEvents.tag),datetime : {$gte: getEvents.date}});
+    }
+    else{
+        return EventDB.find({datetime : {$gte: getEvents.date}});
+    }
+  });
     Meteor.publish('orgsList', function(){
         return OrgDB.find();
     });

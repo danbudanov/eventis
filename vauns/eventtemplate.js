@@ -75,17 +75,21 @@ if(Meteor.isClient){
         },
         'click .tag': function(e){
             e.preventDefault();
-            Session.set('orgID',null);//added to prevent organization page dominating
-            Router.go('tags',{tag:String(this)});
+            Session.set('orgID',undefined);//added to prevent organization page dominating
+            Session.set('search', undefined);
+            Session.set('tag', String(this));
+            // Session.set('orgID',null);//added to prevent organization page dominating
+            // Router.go('tags',{tag:String(this)});
         },
-        'click #theposter': function(e){
+        'click .theposter': function(e){
             e.preventDefault();
             console.log(this.posterID);
             var page = this.posterID;
+            Session.set('org', page)
 /*            console.log(orgName);
             var orgDoc = OrgDB.findOne({poster:orgName});
             var page = orgDoc._id;*/
-            Router.go('orgPage', {page: page});
+            //Router.go('orgPage', {page: page});
         }
     });
     Template.eventListing.events({

@@ -13,13 +13,14 @@ if (Meteor.isClient) {
         }
     });
     Template.eventListing.helpers({
-        eventlist: function(){
-            //suscribe to EventDB data from eventsList, pass the fparam value as argument
-            Meteor.subscribe('eventsList', Session.get('fparam'), Session.get('geo'),Session.get('date'),Session.get('orgID'));
-            //client-side sorting can take place here
-            var cursor = EventDB.find({});
-            return cursor;
-        }
+      eventlist: function(){
+          var getEvent = {date: Session.get('date'), geo: Session.get('geo'), search: Session.get('search'), org: Session.get('orgID'), tag: Session.get('tag')};
+          //suscribe to EventDB data from eventsList by passing the getEvent object
+          Meteor.subscribe('eventsList', getEvent);
+          //client-side sorting can take place here
+          var cursor = EventDB.find({});
+          return cursor;
+      }
     });
 
     Template.search.helpers({
@@ -31,13 +32,21 @@ if (Meteor.isClient) {
         },*/
         'submit #searchbar': function(event){
             event.preventDefault();
-            Session.set('orgID',null);
-            Session.set('fparam', $('[name="searchbar"]').val());
+            Session.set('tag', undefined)
+            Session.set('orgID',undefined);
+            Session.set('search', $('[name="searchbar"]').val());
             //if searchbar moves with scroll, uncomment below
             //$('*').animate({ scrollTop: 0 }, "slow");
         }
     });
-
+    Template.header.events({
+        'click .logo': function(event){
+            Session.set('tag', undefined)
+            Session.set('orgID',undefined);
+            Session.set('search', undefined);
+            Session.set('orgID', undefined);
+        }
+    });
     Template.tagView.helpers({
         currentTag : function(){
             //Session.set('orgID',null);
