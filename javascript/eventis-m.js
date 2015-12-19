@@ -1,13 +1,10 @@
 if (Meteor.isClient) {
-    //initially set fparam to empty
-    //Session.setDefault('fparam', '');
-//    console.log(Geolocation.latLng().Lat);
-//    Session.set('geo', Geolocation.latLng());
     Template.main.helpers({
         //find user geo-location
         geoloc: function() {
             var gloc = Geolocation.latLng();
             Session.set('geo', gloc);
+            //set user's date
             Session.set('date', new Date());
             return gloc;
         }
