@@ -1,0 +1,12 @@
+<template name="users">
+    <ul>
+        {{#each userList}}
+            <li>
+                {{this.username}}
+                <a href="/editUser/{{this._id}}">edit</a>
+                &nbsp;
+                <a href="" id="deleteUser">delete</a>
+            </li>
+        {{/each}}
+    </ul>
+</template>

@@ -1,0 +1,40 @@
+<template name='userEdit'>
+    <p>user: {{username}}</p>
+    <p>id: {{_id}}</p>
+    <br>
+
+    <p>subscribed tags:</p>
+    <ul>
+        {{#each tagList}}
+            <li> {{this}} </li>
+        {{/each}}
+    </ul>
+
+    <p>subscribed organizations:</p>
+    <ul>
+        {{#each orgList}}
+            <li> {{this}} </li>
+        {{/each}}
+    </ul>
+
+    <p>subscribed keywords:</p>
+    <ul>
+        {{#each wordList}}
+            <li> {{this}} </li>
+        {{/each}}
+    </ul>
+
+    <form id='addSubs'>
+        tags:<br>
+        <input type="text" id="tags">
+        <br>
+        orgs:<br>
+        <input type="text" id="orgs">
+        <br>
+        keywords:<br>
+        <input type="text" id="keywords">
+        <br><br>
+        <input type="submit" value="add">
+        <br>
+    </form>
+</template>

@@ -6,6 +6,7 @@ Router.route('/',{
     name: 'home',
     template: 'home'
 });
+
 Router.route('/browse/:tag',{
     template: 'tagView',
     name: 'tags',
@@ -26,5 +27,17 @@ Router.route('/pages/:page',{
         Session.set('orgID',page);
         return OrgDB.findOne({_id:page});
         //return OrgDB.findOne(_id: Session.get('orgID'));
+    }
+});
+
+Router.route('/users');
+
+Router.route('/editUser/:user', {
+    name: 'editUser',
+    template: 'userEdit',
+    data: function() {
+        var user = this.params.user;
+        Session.set('editUser', user);
+        return Meteor.users.findOne({_id: user});
     }
 });

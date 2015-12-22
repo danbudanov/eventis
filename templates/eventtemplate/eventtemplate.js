@@ -24,48 +24,13 @@ if(Meteor.isClient){
             }
         }
     });
-    Template.submit.events({
-        'submit #createEvent': function (event) {
-            event.preventDefault();
-            var poster = Meteor.user().username;
-            if(OrgDB.findOne({poster:poster})){
-                Session.set('crOrgID', OrgDB.findOne({poster:poster})._id)
-            }
-            else {
-                var dat = {
-                    poster: poster,
-                    descr: 'Event description goes here',
-                    img: '#'
-                }
-                Meteor.call('addOrg', dat, function(){
-                    Session.set('crOrgID', OrgDB.findOne({poster:poster})._id)
-                });
-                //                var posterID = (OrgDB.findOne({poster:poster}))._id;
-            }
-            //            var posterID = OrgDB.findOne({poster:poster})._id;
-            var dateTime = new Date($('#crDate').val() + "T" + $('#crTime').val() + ":00");
-            var data = {
-                poster : poster,
-                posterID: Meteor.userId(),
-                name : $('#crTitle').val(),
-                address : $('#crTitle').val(),
-                datetime : dateTime,
-                description : $('#crInfo').val(),
-                tags : $('#crTags').val().split(" "),
-                locat: Geolocation.latLng()
-            }
-            console.log(data.locat)
-            Meteor.call('addEvent',data);
-        }
-    });
+
     Template.eventTemplate.events({
         'click #name': function(e) {
             Session.set("selected",this._id);
-            console.log(this._id);
         },
         'click #attending': function(e){
             e.preventDefault();
-            console.log(this._id._str);
             Meteor.call('attendEvent', this._id);
             //$('.'+this._id._str).toggle();
         },
@@ -87,19 +52,5 @@ if(Meteor.isClient){
             var page = orgDoc._id;*/
             //Router.go('orgPage', {page: page});
         }
-    });
-    Template.eventListing.events({
-        'click #remove': function() {
-            EventDB.remove({_id: Session.get("selected")});
-            console.log(Session.get("selected"));
-        },
-        'click': function() {
-            console.log(Meteor.userId());
-            console.log(Meteor.user().username);
-        }
-    });
-
-    Accounts.ui.config({
-        passwordSignupFields: "USERNAME_ONLY"
     });
 };

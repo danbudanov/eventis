@@ -1,0 +1,13 @@
+<template name='eventListing'>
+    <div id="loginButtons">{{> loginButtons}}</div>
+    {{#if isUser}}
+        {{>submit}}
+    {{/if}}
+    <a id="editProfileLink" href="">edit {{username}}</a>
+    <input type="button" id="remove" value="remove" style="margin:20px;">
+    <div class='listings'>
+        {{#each eventlist}}
+            {{> eventTemplate}}
+        {{/each}}
+    </div>
+</template>

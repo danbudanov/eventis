@@ -9,19 +9,6 @@ if (Meteor.isClient) {
             return gloc;
         }
     });
-    Template.eventListing.helpers({
-      eventlist: function(){
-          var getEvent = {date: Session.get('date'), geo: Session.get('geo'), search: Session.get('search'), org: Session.get('orgID'), tag: Session.get('tag')};
-          //suscribe to EventDB data from eventsList by passing the getEvent object
-          Meteor.subscribe('eventsList', getEvent);
-          //client-side sorting can take place here
-          var cursor = EventDB.find({});
-          return cursor;
-      }
-    });
-
-    Template.search.helpers({
-    });
 
     Template.search.events({
 /*        'click #crEventTitle': function(e){
@@ -51,6 +38,10 @@ if (Meteor.isClient) {
             return tag;
         }
     });
+
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
 }
 if (Meteor.isServer) {
     Meteor.startup(function () {
@@ -60,5 +51,14 @@ if (Meteor.isServer) {
             'name': 'text',
             'descr': 'text'
         });
+    });
+
+    Accounts.onCreateUser(function(options, user) {
+        user.profile = options.profile ? options.profile :{};
+        user.profile.subscribedTags = [];
+        user.profile.subscribedOrgs = [];
+        user.profile.subscribedWords = [];
+        console.log(user._id);
+        return user;
     });
 }
